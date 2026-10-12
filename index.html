@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>The Artist's Way · 12-Week Companion</title>
+
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Artist's Way">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta id="metaThemeColor" name="theme-color" content="#FAF8F5">
+
+  <!-- Anti-FOUC Theme Pre-initialization -->
+  <script>
+    (function() {
+      try {
+        const raw = localStorage.getItem('artists_way_tracker_v1');
+        let theme = 'light';
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.theme) {
+            theme = parsed.theme;
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+          }
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+        const meta = document.getElementById('metaThemeColor') || document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#151412' : '#FAF8F5');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Newsreader & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- CSS RESET & VARIABLES --- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Light Theme (Warm Paper & Ink) */
+    :root {
+      --bg-page: #FAF8F5;
+      --bg-card: #FFFFFF;
+      --bg-card-hover: #FCFBF9;
+      --bg-subtle: #F3EFE7;
+      --border-light: #E8E3D7;
+      --border-focus: #C5BCAB;
+      
+      --ink-primary: #2C2925;
+      --ink-secondary: #6F695F;
+      --ink-muted: #9E978C;
+      --ink-faint: #D4CDC1;
+
+      --accent-sage: #3D5A46;
+      --accent-sage-subtle: #EDF3EE;
+      --accent-sage-border: #BCD0C2;
+      --accent-terracotta: #A55743;
+      --accent-terracotta-subtle: #F9ECE8;
+      --accent-gold: #BD8E48;
+      --accent-gold-subtle: #FAF4E9;
+
+      --switch-knob-bg: #FFFFFF;
+      --toast-bg: #2C2925;
+      --toast-text: #FAF8F5;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 1px 3px rgba(44, 41, 37, 0.04);
+      --shadow-card: 0 2px 10px rgba(44, 41, 37, 0.03), 0 1px 3px rgba(44, 41, 37, 0.04);
+      --shadow-modal: 0 16px 36px -4px rgba(44, 41, 37, 0.16), 0 6px 16px rgba(44, 41, 37, 0.08);
+
+      --font-serif: "Newsreader", "Iowan Old Style", "Apple Garamond", "Baskerville", Georgia, serif;
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    }
+
+    /* Dark Theme ("Night Desk / Midnight Paper") */
+    [data-theme="dark"] {
+      --bg-page: #151412;
+      --bg-card: #1F1D1A;
+      --bg-card-hover: #262420;
+      --bg-subtle: #292621;
+      --border-light: #343029;
+      --border-focus: #524B40;
+
+      --ink-primary: #F0ECE2;
+      --ink-secondary: #ABA496;
+      --ink-muted: #7A7467;
+      --ink-faint: #433E35;
+
+      --accent-sage: #679473;
+      --accent-sage-subtle: #1B291F;
+      --accent-sage-border: #31513A;
+      --accent-terracotta: #D47963;
+      --accent-terracotta-subtle: #36211B;
+      --accent-gold: #D8AA64;
+      --accent-gold-subtle: #302616;
+
+      --switch-knob-bg: #EAE6DD;
+      --toast-bg: #EAE6DD;
+      --toast-text: #151412;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+      --shadow-modal: 0 16px 36px -4px rgba(0, 0, 0, 0.7), 0 6px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-top: max(16px, env(safe-area-inset-top));
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+      touch-action: manipulation;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Ambient Subtle Grain Vignette */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 15%, rgba(255,255,255,0.7) 0%, rgba(246,242,234,0.3) 100%);
+      pointer-events: none;
+      z-index: -1;
+      transition: opacity 0.25s ease;
+    }
+
+    [data-theme="dark"] body::before {
+      background: radial-gradient(circle at 50% 15%, rgba(38,36,31,0.5) 0%, rgba(21,20,18,0.2) 100%);
+    }
+
+    .app-container {
+      max-width: 620px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* --- TOP HEADER & BAR --- */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+    }
+
+    .badge-pill {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-sage);
+      background: var(--accent-sage-subtle);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--accent-sage-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .badge-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent-sage);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-icon-subtle {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-light);
+      color: var(--ink-secondary);
+      border-radius: var(--radius-pill);
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon-subtle:active {
+      transform: scale(0.96);
+      background-color: var(--bg-subtle);
+    }
+
+    /* Header Titles */
+    .header-card {
+      text-align: center;
+      padding: 12px 16px 8px;
+    }
+
+    .app-title {
+      font-family: var(--font-serif);
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink-primary);
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .app-subtitle {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    /* Quote Banner */
+    .quote-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .quote-box:hover {
+      border-color: var(--border-focus);
+    }
+
+    .quote-text {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-style: italic;
+      color: var(--ink-primary);
+      line-height: 1.45;
+      margin-bottom: 4px;
+    }
+
+    .quote-author {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quote-tap-hint {
+      font-size: 10px;
+      font-style: normal;
+      color: var(--accent-gold);
+    }
+
+    /* --- OVERALL PROGRESS METRICS --- */
+    .progress-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-item {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .metric-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .metric-num {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .metric-total {
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .metric-pct {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-sage);
+      margin-left: auto;
+      background: var(--accent-sage-subtle);
+      padding: 2px 6px;
+      border-radius: var(--radius-pill);
+    }
+
+    /* Master Progress Bar */
+    .progress-bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--ink-secondary);
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #51755C 0%, #3D5A46 100%);
+      border-radius: var(--radius-pill);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] .progress-fill {
+      background: linear-gradient(90deg, #44684E 0%, #679473 100%);
+    }
+
+    /* Layout Toggle Row */
+    .list-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 4px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink-primary);
+    }
+
+    .control-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-sage);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-text:active {
+      background-color: var(--accent-sage-subtle);
+    }
+
+    /* --- WEEKS ACCORDION --- */
+    .weeks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .week-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+    }
+
+    .week-card.is-active {
+      border-color: var(--border-focus);
+      box-shadow: var(--shadow-card);
+    }
+
+    .week-card.is-complete {
+      border-color: var(--accent-sage-border);
+      background: #FAFCFA;
+    }
+
+    [data-theme="dark"] .week-card.is-complete {
+      background: #18221B;
+    }
+
+    /* Week Accordion Header */
+    .week-header {
+      width: 100%;
+      background: transparent;
+      border: none;
+      text-align: left;
+      padding: 16px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      user-select: none;
+    }
+
+    .week-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .week-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .week-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+    }
+
+    .week-card.is-complete .week-tag {
+      color: var(--accent-sage);
+    }
+
+    .week-status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-subtle);
+      color: var(--ink-secondary);
+    }
+
+    .week-card.is-complete .week-status-badge {
+      background: var(--accent-sage-subtle);
+      color: var(--accent-sage);
+    }
+
+    .week-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink-primary);
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .week-header-end {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Mini indicator dots in header */
+    .mini-dots {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .mini-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border-light);
+      transition: background-color 0.2s ease;
+    }
+
+    .mini-dot.checked {
+      background: var(--accent-sage);
+    }
+
+    .mini-dot-ad {
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+      background: var(--border-light);
+      transform: rotate(45deg);
+      margin-left: 2px;
+      transition: background-color 0.2s ease;
+    }
+
+    .mini-dot-ad.checked {
+      background: var(--accent-terracotta);
+    }
+
+    .chevron-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--ink-muted);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .week-card.is-expanded .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Week Accordion Content Body */
+    .week-content {
+      display: none;
+      padding: 0 18px 20px 18px;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-card);
+    }
+
+    .week-card.is-expanded .week-content {
+      display: block;
+      animation: fadeInContent 0.22s ease-out;
+    }
+
+    @keyframes fadeInContent {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Subheaders inside Week */
+    .sub-section {
+      margin-top: 16px;
+    }
+
+    .sub-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .sub-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sub-desc {
+      font-size: 12px;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* Morning Pages: 7 Days Grid */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    @media (max-width: 420px) {
+      .days-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+    }
+
+    .day-btn {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 58px;
+    }
+
+    .day-btn:active {
+      transform: scale(0.93);
+    }
+
+    .day-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .day-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-focus);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      transition: all 0.18s ease;
+    }
+
+    .day-check-icon {
+      width: 11px;
+      height: 11px;
+      stroke: #FFFFFF;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.18s ease;
+    }
+
+    /* Day Checked State */
+    .day-btn.is-checked {
+      background: var(--accent-sage-subtle);
+      border-color: var(--accent-sage-border);
+    }
+
+    .day-btn.is-checked .day-label {
+      color: var(--accent-sage);
+      font-weight: 700;
+    }
+
+    .day-btn.is-checked .day-checkbox {
+      background: var(--accent-sage);
+      border-color: var(--accent-sage);
+    }
+
+    .day-btn.is-checked .day-check-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Artist Date Section */
+    .ad-card-box {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .ad-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .ad-text-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-right: 12px;
+    }
+
+    .ad-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .ad-desc {
+      font-size: 12px;
+      color: var(--ink-secondary);
+    }
+
+    /* Tactile Switch Pill */
+    .switch-pill {
+      width: 48px;
+      height: 28px;
+      background: var(--border-light);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      transition: background-color 0.25s ease;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .switch-knob {
+      width: 22px;
+      height: 22px;
+      background: var(--switch-knob-bg);
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .switch-knob svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--accent-terracotta);
+      stroke-width: 2.5;
+      fill: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .ad-card-box.is-checked .switch-pill {
+      background: var(--accent-terracotta);
+    }
+
+    .ad-card-box.is-checked .switch-knob {
+      transform: translateX(20px);
+    }
+
+    .ad-card-box.is-checked .switch-knob svg {
+      opacity: 1;
+    }
+
+    /* Artist Date Reflection Notes */
+    .ad-notes-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px dashed var(--border-light);
+      padding-top: 10px;
+    }
+
+    .ad-notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ad-notes-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-secondary);
+    }
+
+    .save-indicator {
+      font-size: 11px;
+      color: var(--accent-sage);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .save-indicator.visible {
+      opacity: 1;
+    }
+
+    .ad-textarea {
+      width: 100%;
+      min-height: 56px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--ink-primary);
+      background: var(--bg-card);
+      resize: vertical;
+      line-height: 1.4;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .ad-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+
+    .ad-textarea::placeholder {
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* Week Completed Banner */
+    .week-completed-banner {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--accent-sage-subtle);
+      border: 1px solid var(--accent-sage-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent-sage);
+    }
+
+    /* --- FOOTER & RESTORE --- */
+    .app-footer {
+      text-align: center;
+      padding: 24px 0 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-family: var(--font-sans);
+    }
+
+    .footer-btn:hover {
+      color: var(--ink-primary);
+    }
+
+    .footer-attribution {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* --- CUSTOM MODALS (NO ALERT / CONFIRM) --- */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(22, 20, 18, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .modal-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 440px;
+      padding: 26px 24px 22px;
+      box-shadow: var(--shadow-modal);
+      transform: scale(0.95);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+    }
+
+    .modal-backdrop.is-open .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .badge-danger {
+      background: var(--accent-terracotta-subtle);
+      color: var(--accent-terracotta);
+    }
+
+    .badge-info {
+      background: var(--accent-sage-subtle);
+      color: var(--accent-sage);
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink-primary);
+      margin-bottom: 8px;
+    }
+
+    .modal-body {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn-modal {
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.16s ease;
+    }
+
+    .btn-modal:active {
+      transform: scale(0.96);
+    }
+
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--ink-primary);
+      border-color: var(--border-light);
+    }
+
+    .btn-danger {
+      background: var(--accent-terracotta);
+      color: #FFFFFF;
+    }
+
+    .btn-primary {
+      background: var(--accent-sage);
+      color: #FFFFFF;
+    }
+
+    /* Guide Modal Bullet List */
+    .guide-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .guide-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-sage-subtle);
+      color: var(--accent-sage);
+      font-weight: 700;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .guide-text h4 {
+      font-size: 13.5px;
+      color: var(--ink-primary);
+      margin-bottom: 2px;
+    }
+
+    .guide-text p {
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: max(24px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--toast-bg);
+      color: var(--toast-text);
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      z-index: 2000;
+      pointer-events: none;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-pill.is-active {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+      <div class="badge-pill">12-Week Journey</div>
+      <div class="top-actions">
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="btnThemeToggle" class="btn-icon-subtle" aria-label="Toggle Theme" title="Toggle dark/light theme">
+          <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <span id="themeLabel">Dark</span>
+        </button>
+
+        <button id="btnInfo" class="btn-icon-subtle" aria-label="Book Guide">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Guide
+        </button>
+
+        <button id="btnReset" class="btn-icon-subtle" aria-label="Reset Progress">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+          Reset
+        </button>
+      </div>
+    </header>
+
+    <!-- Title Section -->
+    <section class="header-card">
+      <h1 class="app-title">The Artist's Way</h1>
+      <p class="app-subtitle">A Spiritual Path to Higher Creativity · Companion Tracker</p>
+    </section>
+
+    <!-- Daily Wisdom Quote Banner (Tap to rotate) -->
+    <div id="quoteBox" class="quote-box" role="button" title="Tap for another quote">
+      <p id="quoteText" class="quote-text">"In order to retrieve your creativity, you need to find it."</p>
+      <div class="quote-author">
+        <span>— Julia Cameron</span>
+        <span class="quote-tap-hint">Tap for inspiration ↺</span>
+      </div>
+    </div>
+
+    <!-- Overall Program Progress Card -->
+    <section class="progress-card">
+      <div class="metrics-grid">
+        <!-- Morning Pages Metric -->
+        <div class="metric-item">
+          <div class="metric-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Morning Pages
+          </div>
+          <div class="metric-value-row">
+            <span id="statMpDone" class="metric-num">0</span>
+            <span class="metric-total">/ 84</span>
+            <span id="statMpPct" class="metric-pct">0%</span>
+          </div>
+        </div>
+
+        <!-- Artist Dates Metric -->
+        <div class="metric-item">
+          <div class="metric-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
+            Artist Dates
+          </div>
+          <div class="metric-value-row">
+            <span id="statAdDone" class="metric-num">0</span>
+            <span class="metric-total">/ 12</span>
+            <span id="statAdPct" class="metric-pct">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Progress Bar -->
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-labels">
+          <span>Overall Course Completion</span>
+          <span id="statOverallPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls Row -->
+    <div class="list-controls">
+      <h2 class="section-title">The 12 Weeks</h2>
+      <div class="control-actions">
+        <button id="btnExpandActive" class="btn-text">Active Week</button>
+        <button id="btnToggleAll" class="btn-text">Expand All</button>
+      </div>
+    </div>
+
+    <!-- Weeks Accordion Container -->
+    <main id="weeksContainer" class="weeks-list"></main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-links">
+        <button id="btnExport" class="footer-btn">Backup Data (JSON)</button>
+        <button id="btnImport" class="footer-btn">Restore Backup</button>
+      </div>
+      <p class="footer-attribution">Dedicated to your 3 handwritten pages & solo weekly dates.</p>
+    </footer>
+
+  </div>
+
+  <!-- Hidden File Input for Data Restore -->
+  <input type="file" id="importFileInput" accept=".json" style="display:none;">
+
+  <!-- Toast Notification -->
+  <div id="toastPill" class="toast-pill">Changes saved</div>
+
+  <!-- CUSTOM MODAL: Reset Confirmation -->
+  <div id="resetModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="resetModalTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge badge-danger">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      </div>
+      <h3 id="resetModalTitle" class="modal-title">Reset All Progress?</h3>
+      <p class="modal-body">
+        This will permanently clear all 12 weeks of checked Morning Pages, Artist Dates, and written notes. This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button id="btnCancelReset" class="btn-modal btn-secondary">Keep My Progress</button>
+        <button id="btnConfirmReset" class="btn-modal btn-danger">Reset Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM MODAL: Program Guide -->
+  <div id="guideModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge badge-info">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      </div>
+      <h3 id="guideModalTitle" class="modal-title">The Two Basic Tools</h3>
+      <div class="modal-body">
+        <div class="guide-item">
+          <div class="guide-num">1</div>
+          <div class="guide-text">
+            <h4>Morning Pages</h4>
+            <p>Three pages of longhand, stream-of-consciousness writing done first thing in the morning on paper. Do not censor or show to anyone.</p>
+          </div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-num">2</div>
+          <div class="guide-text">
+            <h4>The Artist Date</h4>
+            <p>A once-weekly, two-hour block of festive, solo time dedicated to nurturing your inner creative child. No companions allowed.</p>
+          </div>
+        </div>
+        <div class="guide-item">
+          <div class="guide-num">3</div>
+          <div class="guide-text">
+            <h4>This Companion App</h4>
+            <p>Runs offline and saves automatically to your device. Add this page to your iOS Home Screen for an instant morning check-in.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="btnCloseGuide" class="btn-modal btn-primary" style="width:100%;">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VANILLA JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- 12-WEEK DATA STRUCTURE ---
+      const WEEKS_DATA = [
+        { num: 1, title: "Recovering a Sense of Safety" },
+        { num: 2, title: "Recovering a Sense of Identity" },
+        { num: 3, title: "Recovering a Sense of Power" },
+        { num: 4, title: "Recovering a Sense of Integrity" },
+        { num: 5, title: "Recovering a Sense of Possibility" },
+        { num: 6, title: "Recovering a Sense of Abundance" },
+        { num: 7, title: "Recovering a Sense of Connection" },
+        { num: 8, title: "Recovering a Sense of Strength" },
+        { num: 9, title: "Recovering a Sense of Compassion" },
+        { num: 10, title: "Recovering a Sense of Self-Protection" },
+        { num: 11, title: "Recovering a Sense of Autonomy" },
+        { num: 12, title: "Recovering a Sense of Faith" }
+      ];
+
+      const QUOTES = [
+        "In order to retrieve your creativity, you need to find it.",
+        "Leap, and the net will appear.",
+        "Treat yourself like a precious art object, and you’ll make art.",
+        "Art is not about thinking something up. It is about getting something down.",
+        "Morning Pages are nonnegotiable. They are the primary tool of creative recovery.",
+        "You cannot be creative without vulnerability.",
+        "Creativity requires faith. Faith requires that we surrender control.",
+        "The Artist Date is a date with yourself, for yourself.",
+        "We are our own most severe critics. The Morning Pages teach us to keep going anyway.",
+        "Expect the universe to support your dream. It will."
+      ];
+
+      const STORAGE_KEY = 'artists_way_tracker_v1';
+
+      // Default State
+      let appState = {
+        weeks: {},
+        openWeeks: [],
+        quoteIndex: 0,
+        theme: 'light'
+      };
+
+      // Initialize default empty weeks
+      function getDefaultWeekState() {
+        return {
+          days: [false, false, false, false, false, false, false],
+          artistDate: false,
+          artistDateNote: ""
+        };
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            appState = { ...appState, ...parsed };
+          }
+        } catch (e) {
+          console.warn('Could not read from localStorage:', e);
+        }
+
+        // Initialize theme if unset
+        if (!appState.theme) {
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            appState.theme = 'dark';
+          } else {
+            appState.theme = 'light';
+          }
+        }
+
+        // Ensure all 12 weeks are initialized
+        for (let i = 1; i <= 12; i++) {
+          if (!appState.weeks[i]) {
+            appState.weeks[i] = getDefaultWeekState();
+          } else {
+            if (!Array.isArray(appState.weeks[i].days) || appState.weeks[i].days.length !== 7) {
+              appState.weeks[i].days = [false, false, false, false, false, false, false];
+            }
+            if (typeof appState.weeks[i].artistDate !== 'boolean') {
+              appState.weeks[i].artistDate = false;
+            }
+            if (typeof appState.weeks[i].artistDateNote !== 'string') {
+              appState.weeks[i].artistDateNote = "";
+            }
+          }
+        }
+
+        // Auto-determine active week if no open weeks recorded
+        if (!appState.openWeeks || appState.openWeeks.length === 0) {
+          const activeW = getFirstIncompleteWeek();
+          appState.openWeeks = [activeW];
+        }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        } catch (e) {
+          console.warn('Could not save to localStorage:', e);
+        }
+      }
+
+      function getFirstIncompleteWeek() {
+        for (let i = 1; i <= 12; i++) {
+          const w = appState.weeks[i];
+          const isDone = w.days.every(d => d === true) && w.artistDate;
+          if (!isDone) return i;
+        }
+        return 12;
+      }
+
+      // --- DOM REFERENCES ---
+      const weeksContainer = document.getElementById('weeksContainer');
+      const statMpDone = document.getElementById('statMpDone');
+      const statMpPct = document.getElementById('statMpPct');
+      const statAdDone = document.getElementById('statAdDone');
+      const statAdPct = document.getElementById('statAdPct');
+      const statOverallPct = document.getElementById('statOverallPct');
+      const progressFill = document.getElementById('progressFill');
+
+      const quoteBox = document.getElementById('quoteBox');
+      const quoteText = document.getElementById('quoteText');
+
+      const btnReset = document.getElementById('btnReset');
+      const resetModal = document.getElementById('resetModal');
+      const btnCancelReset = document.getElementById('btnCancelReset');
+      const btnConfirmReset = document.getElementById('btnConfirmReset');
+
+      const btnInfo = document.getElementById('btnInfo');
+      const guideModal = document.getElementById('guideModal');
+      const btnCloseGuide = document.getElementById('btnCloseGuide');
+
+      const btnToggleAll = document.getElementById('btnToggleAll');
+      const btnExpandActive = document.getElementById('btnExpandActive');
+
+      const btnThemeToggle = document.getElementById('btnThemeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeLabel = document.getElementById('themeLabel');
+      const metaThemeColor = document.getElementById('metaThemeColor');
+
+      const btnExport = document.getElementById('btnExport');
+      const btnImport = document.getElementById('btnImport');
+      const importFileInput = document.getElementById('importFileInput');
+      const toastPill = document.getElementById('toastPill');
+
+      let toastTimer = null;
+      function showToast(msg) {
+        toastPill.textContent = msg;
+        toastPill.classList.add('is-active');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastPill.classList.remove('is-active');
+        }, 2200);
+      }
+
+      // --- THEME SYSTEM ---
+      const SUN_ICON_SVG = `
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      `;
+
+      const MOON_ICON_SVG = `
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      `;
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        appState.theme = theme;
+        saveState();
+
+        if (theme === 'dark') {
+          themeIcon.innerHTML = SUN_ICON_SVG;
+          themeLabel.textContent = 'Light';
+          if (metaThemeColor) metaThemeColor.setAttribute('content', '#151412');
+        } else {
+          themeIcon.innerHTML = MOON_ICON_SVG;
+          themeLabel.textContent = 'Dark';
+          if (metaThemeColor) metaThemeColor.setAttribute('content', '#FAF8F5');
+        }
+      }
+
+      btnThemeToggle.addEventListener('click', () => {
+        const nextTheme = appState.theme === 'dark' ? 'light' : 'dark';
+        if (navigator.vibrate) navigator.vibrate(8);
+        applyTheme(nextTheme);
+        showToast(nextTheme === 'dark' ? 'Night Desk Mode on' : 'Paper Mode on');
+      });
+
+      // --- RENDER WEEKS ---
+      function renderWeeks() {
+        weeksContainer.innerHTML = '';
+
+        WEEKS_DATA.forEach(weekMeta => {
+          const wNum = weekMeta.num;
+          const weekState = appState.weeks[wNum];
+          const isExpanded = appState.openWeeks.includes(wNum);
+
+          const mpCount = weekState.days.filter(Boolean).length;
+          const adDone = weekState.artistDate;
+          const isWeekComplete = (mpCount === 7) && adDone;
+
+          const card = document.createElement('article');
+          card.className = `week-card ${isExpanded ? 'is-expanded' : ''} ${isWeekComplete ? 'is-complete' : ''}`;
+          card.id = `weekCard-${wNum}`;
+
+          // Header HTML
+          const padNum = String(wNum).padStart(2, '0');
+          let dotsHtml = '';
+          for (let d = 0; d < 7; d++) {
+            dotsHtml += `<span class="mini-dot ${weekState.days[d] ? 'checked' : ''}"></span>`;
+          }
+          dotsHtml += `<span class="mini-dot-ad ${adDone ? 'checked' : ''}" title="Artist Date"></span>`;
+
+          const statusText = isWeekComplete ? 'Complete' : `${mpCount}/7 MP · ${adDone ? '1' : '0'}/1 AD`;
+
+          card.innerHTML = `
+            <button class="week-header" type="button" aria-expanded="${isExpanded}" aria-controls="weekBody-${wNum}">
+              <div class="week-header-info">
+                <div class="week-tag-row">
+                  <span class="week-tag">Week ${padNum}</span>
+                  <span class="week-status-badge">${statusText}</span>
+                </div>
+                <h3 class="week-title">${weekMeta.title}</h3>
+              </div>
+              <div class="week-header-end">
+                <div class="mini-dots" aria-hidden="true">${dotsHtml}</div>
+                <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </button>
+
+            <div id="weekBody-${wNum}" class="week-content">
+              <!-- Morning Pages -->
+              <div class="sub-section">
+                <div class="sub-header-row">
+                  <span class="sub-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Morning Pages
+                  </span>
+                  <span class="sub-desc">3 handwritten pages</span>
+                </div>
+                <div class="days-grid" role="group" aria-label="Week ${wNum} Morning Pages">
+                  ${[0,1,2,3,4,5,6].map(dayIdx => {
+                    const checked = weekState.days[dayIdx];
+                    return `
+                      <button type="button" class="day-btn ${checked ? 'is-checked' : ''}" data-week="${wNum}" data-day="${dayIdx}" aria-pressed="${checked}">
+                        <span class="day-label">D${dayIdx + 1}</span>
+                        <div class="day-checkbox">
+                          <svg class="day-check-icon" viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- Artist Date -->
+              <div class="sub-section">
+                <div class="sub-header-row">
+                  <span class="sub-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
+                    Weekly Artist Date
+                  </span>
+                  <span class="sub-desc">2 hours of solo play</span>
+                </div>
+
+                <div class="ad-card-box ${adDone ? 'is-checked' : ''}">
+                  <div class="ad-toggle-row" data-week="${wNum}">
+                    <div class="ad-text-block">
+                      <span class="ad-title">Completed Artist Date</span>
+                      <span class="ad-desc">Solo, enchanting excursion for your inner artist</span>
+                    </div>
+                    <div class="switch-pill">
+                      <div class="switch-knob">
+                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Reflection Note Input -->
+                  <div class="ad-notes-wrap">
+                    <div class="ad-notes-header">
+                      <span class="ad-notes-label">Artist Date Notes</span>
+                      <span class="save-indicator" id="saveInd-${wNum}">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Saved
+                      </span>
+                    </div>
+                    <textarea 
+                      class="ad-textarea" 
+                      data-week="${wNum}" 
+                      placeholder="Where did you go? What spark did you experience?" 
+                      rows="2">${escapeHtml(weekState.artistDateNote || '')}</textarea>
+                  </div>
+                </div>
+              </div>
+
+              ${isWeekComplete ? `
+                <div class="week-completed-banner">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  <span>Week Complete · Creative recovery in action!</span>
+                </div>
+              ` : ''}
+            </div>
+          `;
+
+          // Event Listeners for this card
+          const headerBtn = card.querySelector('.week-header');
+          headerBtn.addEventListener('click', () => toggleWeekAccordion(wNum));
+
+          // Morning page day click
+          const dayButtons = card.querySelectorAll('.day-btn');
+          dayButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const w = parseInt(btn.dataset.week, 10);
+              const d = parseInt(btn.dataset.day, 10);
+              toggleDay(w, d);
+            });
+          });
+
+          // Artist date toggle row click
+          const adToggle = card.querySelector('.ad-toggle-row');
+          adToggle.addEventListener('click', () => {
+            toggleArtistDate(wNum);
+          });
+
+          // Artist date textarea input
+          const noteArea = card.querySelector('.ad-textarea');
+          let noteDebounce = null;
+          noteArea.addEventListener('input', () => {
+            clearTimeout(noteDebounce);
+            noteDebounce = setTimeout(() => {
+              appState.weeks[wNum].artistDateNote = noteArea.value;
+              saveState();
+              flashSavedIndicator(wNum);
+            }, 300);
+          });
+
+          weeksContainer.appendChild(card);
+        });
+
+        updateProgressMetrics();
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function flashSavedIndicator(wNum) {
+        const ind = document.getElementById(`saveInd-${wNum}`);
+        if (ind) {
+          ind.classList.add('visible');
+          setTimeout(() => ind.classList.remove('visible'), 1600);
+        }
+      }
+
+      // --- INTERACTIONS ---
+      function toggleWeekAccordion(wNum) {
+        if (appState.openWeeks.includes(wNum)) {
+          appState.openWeeks = appState.openWeeks.filter(id => id !== wNum);
+        } else {
+          appState.openWeeks.push(wNum);
+        }
+        saveState();
+        renderWeeks();
+      }
+
+      function toggleDay(wNum, dayIdx) {
+        if (navigator.vibrate) navigator.vibrate(12);
+        const currentVal = appState.weeks[wNum].days[dayIdx];
+        appState.weeks[wNum].days[dayIdx] = !currentVal;
+        saveState();
+        renderWeeks();
+      }
+
+      function toggleArtistDate(wNum) {
+        if (navigator.vibrate) navigator.vibrate(14);
+        appState.weeks[wNum].artistDate = !appState.weeks[wNum].artistDate;
+        saveState();
+        renderWeeks();
+      }
+
+      // --- OVERALL PROGRESS CALCULATION ---
+      function updateProgressMetrics() {
+        let totalMp = 0;
+        let totalAd = 0;
+
+        for (let i = 1; i <= 12; i++) {
+          const w = appState.weeks[i];
+          totalMp += w.days.filter(Boolean).length;
+          if (w.artistDate) totalAd++;
+        }
+
+        const mpPercent = Math.round((totalMp / 84) * 100);
+        const adPercent = Math.round((totalAd / 12) * 100);
+        const overallPercent = Math.round(((totalMp + totalAd) / 96) * 100);
+
+        statMpDone.textContent = totalMp;
+        statMpPct.textContent = `${mpPercent}%`;
+
+        statAdDone.textContent = totalAd;
+        statAdPct.textContent = `${adPercent}%`;
+
+        statOverallPct.textContent = `${overallPercent}%`;
+        progressFill.style.width = `${overallPercent}%`;
+
+        // Update toggle all button text
+        const allOpen = appState.openWeeks.length === 12;
+        btnToggleAll.textContent = allOpen ? "Collapse All" : "Expand All";
+      }
+
+      // --- QUOTES LOGIC ---
+      function displayQuote() {
+        if (appState.quoteIndex >= QUOTES.length) appState.quoteIndex = 0;
+        quoteText.textContent = `"${QUOTES[appState.quoteIndex]}"`;
+      }
+
+      quoteBox.addEventListener('click', () => {
+        appState.quoteIndex = (appState.quoteIndex + 1) % QUOTES.length;
+        saveState();
+        displayQuote();
+        if (navigator.vibrate) navigator.vibrate(8);
+      });
+
+      // --- CONTROLS: EXPAND ALL / ACTIVE ---
+      btnToggleAll.addEventListener('click', () => {
+        if (appState.openWeeks.length === 12) {
+          appState.openWeeks = [];
+        } else {
+          appState.openWeeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        }
+        saveState();
+        renderWeeks();
+      });
+
+      btnExpandActive.addEventListener('click', () => {
+        const activeW = getFirstIncompleteWeek();
+        appState.openWeeks = [activeW];
+        saveState();
+        renderWeeks();
+
+        const el = document.getElementById(`weekCard-${activeW}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+
+      // --- CUSTOM RESET MODAL ---
+      btnReset.addEventListener('click', () => {
+        resetModal.classList.add('is-open');
+      });
+
+      btnCancelReset.addEventListener('click', () => {
+        resetModal.classList.remove('is-open');
+      });
+
+      btnConfirmReset.addEventListener('click', () => {
+        for (let i = 1; i <= 12; i++) {
+          appState.weeks[i] = getDefaultWeekState();
+        }
+        appState.openWeeks = [1];
+        saveState();
+        resetModal.classList.remove('is-open');
+        renderWeeks();
+        showToast('All progress has been reset');
+      });
+
+      // --- GUIDE MODAL ---
+      btnInfo.addEventListener('click', () => {
+        guideModal.classList.add('is-open');
+      });
+
+      btnCloseGuide.addEventListener('click', () => {
+        guideModal.classList.remove('is-open');
+      });
+
+      // Close modals on backdrop click or ESC
+      [resetModal, guideModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.classList.remove('is-open');
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          resetModal.classList.remove('is-open');
+          guideModal.classList.remove('is-open');
+        }
+      });
+
+      // --- BACKUP & RESTORE DATA ---
+      btnExport.addEventListener('click', () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `artists-way-backup-${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast('Backup file downloaded');
+      });
+
+      btnImport.addEventListener('click', () => {
+        importFileInput.click();
+      });
+
+      importFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const imported = JSON.parse(event.target.result);
+            if (imported && imported.weeks) {
+              appState = imported;
+              saveState();
+              applyTheme(appState.theme || 'light');
+              renderWeeks();
+              showToast('Backup restored successfully');
+            } else {
+              showToast('Invalid backup file format');
+            }
+          } catch (err) {
+            showToast('Error reading backup file');
+          }
+        };
+        reader.readAsText(file);
+        importFileInput.value = '';
+      });
+
+      // --- SERVICE WORKER REGISTRATION (OFFLINE PWA) ---
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('ServiceWorker registered:', reg.scope))
+            .catch(err => console.log('ServiceWorker registration error:', err));
+        });
+      }
+
+      // --- INITIAL MOUNT ---
+      loadState();
+      applyTheme(appState.theme || 'light');
+      displayQuote();
+      renderWeeks();
+
+    })();
+  </script>
+</body>
+</html>

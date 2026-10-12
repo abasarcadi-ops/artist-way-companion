@@ -1,0 +1,10 @@
+# Netlify configuration for The Artist's Way PWA
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    cache-control = "max-age=0, no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    cache-control = "max-age=0, no-cache, no-store, must-revalidate"
