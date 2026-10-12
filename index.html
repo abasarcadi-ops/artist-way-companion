@@ -134,6 +134,7 @@
       padding-right: max(16px, env(safe-area-inset-right));
       touch-action: manipulation;
       transition: background-color 0.25s ease, color 0.25s ease;
+      position: relative;
     }
 
     /* Ambient Subtle Grain Vignette */
@@ -151,12 +152,20 @@
       background: radial-gradient(circle at 50% 15%, rgba(38,36,31,0.5) 0%, rgba(21,20,18,0.2) 100%);
     }
 
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
     .app-container {
       max-width: 620px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
     }
 
     /* --- TOP HEADER & BAR --- */
@@ -164,7 +173,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 8px;
+      padding-top: 6px;
     }
 
     .badge-pill {
@@ -208,7 +217,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s ease;
     }
 
@@ -220,7 +229,7 @@
     /* Header Titles */
     .header-card {
       text-align: center;
-      padding: 12px 16px 8px;
+      padding: 8px 16px 4px;
     }
 
     .app-title {
@@ -230,7 +239,7 @@
       letter-spacing: -0.01em;
       color: var(--ink-primary);
       line-height: 1.15;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .app-subtitle {
@@ -238,6 +247,58 @@
       color: var(--ink-secondary);
       font-weight: 400;
       letter-spacing: 0.01em;
+    }
+
+    /* ADHD Toolbar: Quick Access Chips */
+    .adhd-tools-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+
+    .adhd-tools-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tool-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      color: var(--ink-primary);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .tool-chip:hover {
+      border-color: var(--border-focus);
+    }
+
+    .tool-chip:active {
+      transform: scale(0.95);
+      background-color: var(--bg-subtle);
+    }
+
+    .tool-chip-gold {
+      background: var(--accent-gold-subtle);
+      border-color: rgba(189, 142, 72, 0.35);
+      color: var(--ink-primary);
+    }
+
+    .tool-chip-sage {
+      background: var(--accent-sage-subtle);
+      border-color: var(--accent-sage-border);
+      color: var(--accent-sage);
     }
 
     /* Quote Banner */
@@ -293,6 +354,59 @@
       flex-direction: column;
       gap: 16px;
       transition: all 0.2s ease;
+    }
+
+    /* ONE-TAP ADHD QUICK CHECK-IN ACTION */
+    .quick-log-hero {
+      background: linear-gradient(135deg, var(--accent-sage-subtle) 0%, var(--bg-card) 100%);
+      border: 1.5px solid var(--accent-sage-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .quick-log-hero:active {
+      transform: scale(0.97);
+    }
+
+    .quick-log-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .quick-log-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quick-log-sub {
+      font-size: 12px;
+      color: var(--ink-secondary);
+    }
+
+    .quick-log-btn {
+      background: var(--accent-sage);
+      color: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(61, 90, 70, 0.25);
+      flex-shrink: 0;
     }
 
     .metrics-grid {
@@ -381,6 +495,24 @@
 
     [data-theme="dark"] .progress-fill {
       background: linear-gradient(90deg, #44684E 0%, #679473 100%);
+    }
+
+    /* Compassionate Momentum Banner (No-Shame Anti-Streak) */
+    .compassion-banner {
+      background: var(--bg-page);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 11.5px;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px dashed var(--border-light);
+    }
+
+    .compassion-banner svg {
+      color: var(--accent-sage);
+      flex-shrink: 0;
     }
 
     /* Layout Toggle Row */
@@ -592,7 +724,7 @@
     .sub-header-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: 10px;
     }
 
@@ -611,6 +743,24 @@
       font-size: 12px;
       color: var(--ink-muted);
       font-style: italic;
+    }
+
+    .section-action-btn {
+      background: none;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-pill);
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .section-action-btn:active {
+      background-color: var(--bg-subtle);
     }
 
     /* Morning Pages: 7 Days Grid */
@@ -860,6 +1010,12 @@
       font-size: 12.5px;
       font-weight: 600;
       color: var(--accent-sage);
+      animation: pulseBanner 0.4s ease-out;
+    }
+
+    @keyframes pulseBanner {
+      0% { transform: scale(0.96); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     /* --- FOOTER & RESTORE --- */
@@ -930,6 +1086,7 @@
       box-shadow: var(--shadow-modal);
       transform: scale(0.95);
       transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+      position: relative;
     }
 
     .modal-backdrop.is-open .modal-card {
@@ -954,6 +1111,11 @@
     .badge-info {
       background: var(--accent-sage-subtle);
       color: var(--accent-sage);
+    }
+
+    .badge-gold {
+      background: var(--accent-gold-subtle);
+      color: var(--accent-gold);
     }
 
     .modal-title {
@@ -986,6 +1148,10 @@
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .btn-modal:active {
@@ -1006,6 +1172,121 @@
     .btn-primary {
       background: var(--accent-sage);
       color: #FFFFFF;
+    }
+
+    /* --- ADHD TIMER MODAL STYLES --- */
+    .timer-display-box {
+      text-align: center;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .timer-ring-wrapper {
+      position: relative;
+      width: 170px;
+      height: 170px;
+    }
+
+    .timer-svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .timer-circle-bg {
+      fill: none;
+      stroke: var(--bg-subtle);
+      stroke-width: 8;
+    }
+
+    .timer-circle-progress {
+      fill: none;
+      stroke: var(--accent-sage);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .timer-digits-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .timer-presets {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .timer-preset-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      color: var(--ink-secondary);
+      border-radius: var(--radius-pill);
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .timer-preset-btn.is-selected {
+      background: var(--accent-sage);
+      color: #FFFFFF;
+      border-color: var(--accent-sage);
+    }
+
+    .timer-sound-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+      margin-top: 4px;
+    }
+
+    .btn-timer-ctrl {
+      min-width: 100px;
+    }
+
+    /* --- IDEA / SPARK CARD STYLES --- */
+    .spark-card-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .spark-category-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .spark-main-text {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--ink-primary);
+      line-height: 1.4;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Guide Modal Bullet List */
@@ -1067,6 +1348,9 @@
 </head>
 <body>
 
+  <!-- Particle Celebration Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
   <div class="app-container">
 
     <!-- Top Navigation Bar -->
@@ -1099,6 +1383,24 @@
       <p class="app-subtitle">A Spiritual Path to Higher Creativity · Companion Tracker</p>
     </section>
 
+    <!-- ADHD TOOLBAR: Instant Dopamine & Anti-Friction Boosters -->
+    <div class="adhd-tools-row" role="region" aria-label="Quick Creative Boosters">
+      <button id="btnOpenTimer" class="tool-chip" title="Focus Timer for Morning Pages">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        25m Morning Timer
+      </button>
+
+      <button id="btnOpenSpark" class="tool-chip tool-chip-gold" title="Thought Starters to Break Blank Page Anxiety">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        Brain-Unstick Spark
+      </button>
+
+      <button id="btnOpenIdeas" class="tool-chip tool-chip-sage" title="Shuffle Ideas for your Weekly Artist Date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
+        Artist Date Idea Jar
+      </button>
+    </div>
+
     <!-- Daily Wisdom Quote Banner (Tap to rotate) -->
     <div id="quoteBox" class="quote-box" role="button" title="Tap for another quote">
       <p id="quoteText" class="quote-text">"In order to retrieve your creativity, you need to find it."</p>
@@ -1110,6 +1412,19 @@
 
     <!-- Overall Program Progress Card -->
     <section class="progress-card">
+      
+      <!-- ONE-TAP ADHD QUICK CHECK-IN ACTION -->
+      <div id="quickLogHero" class="quick-log-hero" role="button" title="Log today in 1 tap">
+        <div class="quick-log-text">
+          <span id="quickLogTitle" class="quick-log-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Check Off Today's Pages
+          </span>
+          <span id="quickLogSub" class="quick-log-sub">Next: Week 1 · Day 1</span>
+        </div>
+        <span class="quick-log-btn">Log Today ✍️</span>
+      </div>
+
       <div class="metrics-grid">
         <!-- Morning Pages Metric -->
         <div class="metric-item">
@@ -1148,6 +1463,13 @@
           <div id="progressFill" class="progress-fill"></div>
         </div>
       </div>
+
+      <!-- Anti-Shame Cumulative Momentum Banner -->
+      <div class="compassion-banner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <span><strong>Gentle Reminder:</strong> If you miss a day, there is no broken streak. Pick up your pen today.</span>
+      </div>
+
     </section>
 
     <!-- Controls Row -->
@@ -1179,7 +1501,104 @@
   <!-- Toast Notification -->
   <div id="toastPill" class="toast-pill">Changes saved</div>
 
-  <!-- CUSTOM MODAL: Reset Confirmation -->
+  <!-- ============================================================== -->
+  <!-- MODAL: ADHD 25-MINUTE MORNING TIMER & SOUND CONTAINER -->
+  <!-- ============================================================== -->
+  <div id="timerModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="timerModalTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge badge-info">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      </div>
+      <h3 id="timerModalTitle" class="modal-title">Morning Writing Container</h3>
+      <p class="modal-body" style="margin-bottom: 8px;">
+        Put your phone down, pick up your pen, and write your 3 longhand pages until the Tibetan bell chimes.
+      </p>
+
+      <div class="timer-display-box">
+        <!-- Preset selector -->
+        <div class="timer-presets">
+          <button class="timer-preset-btn" data-min="20">20 min</button>
+          <button class="timer-preset-btn is-selected" data-min="25">25 min</button>
+          <button class="timer-preset-btn" data-min="30">30 min</button>
+        </div>
+
+        <!-- SVG Circular Ring Timer -->
+        <div class="timer-ring-wrapper">
+          <svg class="timer-svg" viewBox="0 0 160 160">
+            <circle class="timer-circle-bg" cx="80" cy="80" r="70"></circle>
+            <circle id="timerProgressCircle" class="timer-circle-progress" cx="80" cy="80" r="70"></circle>
+          </svg>
+          <div id="timerDigits" class="timer-digits-center">25:00</div>
+        </div>
+
+        <!-- Ambient Sound Option -->
+        <label class="timer-sound-row">
+          <input type="checkbox" id="chkAmbientSound" style="accent-color: var(--accent-sage);">
+          <span>Gentle Rain Ambient Noise (Web Audio)</span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnResetTimer" class="btn-modal btn-secondary">Reset</button>
+        <button id="btnToggleTimer" class="btn-modal btn-primary btn-timer-ctrl">Start Writing</button>
+        <button id="btnCloseTimer" class="btn-modal btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: BRAIN-UNSTICK INITIATION SPARKS -->
+  <!-- ============================================================== -->
+  <div id="sparkModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="sparkModalTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge badge-gold">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </div>
+      <h3 id="sparkModalTitle" class="modal-title">Brain-Unstick Spark</h3>
+      <p class="modal-body" style="margin-bottom: 12px;">
+        Stuck on what to write? There are no wrong Morning Pages. Write this prompt at the top of your physical page:
+      </p>
+
+      <div class="spark-card-box">
+        <span class="spark-category-tag">Thought Starter</span>
+        <div id="sparkText" class="spark-main-text">"Right now, my body feels..."</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnNextSpark" class="btn-modal btn-secondary">Shuffle Another ↺</button>
+        <button id="btnCopySpark" class="btn-modal btn-primary">Copy Prompt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: ARTIST DATE IDEA GENERATOR JAR -->
+  <!-- ============================================================== -->
+  <div id="ideaModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="ideaModalTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge badge-info">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
+      </div>
+      <h3 id="ideaModalTitle" class="modal-title">Artist Date Idea Jar</h3>
+      <p class="modal-body" style="margin-bottom: 12px;">
+        Beat decision fatigue. A 2-hour solo excursion to enchant your inner creative child:
+      </p>
+
+      <div class="spark-card-box">
+        <span id="ideaCategory" class="spark-category-tag">Thrift & Curiosities</span>
+        <div id="ideaText" class="spark-main-text">"Browse a thrift store specifically for vintage postcards or quirky ceramics."</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnNextIdea" class="btn-modal btn-secondary">Shuffle Idea 🎲</button>
+        <button id="btnUseIdea" class="btn-modal btn-primary">Use for This Week ✍️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: RESET CONFIRMATION -->
+  <!-- ============================================================== -->
   <div id="resetModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="resetModalTitle">
     <div class="modal-card">
       <div class="modal-icon-badge badge-danger">
@@ -1196,7 +1615,9 @@
     </div>
   </div>
 
-  <!-- CUSTOM MODAL: Program Guide -->
+  <!-- ============================================================== -->
+  <!-- MODAL: PROGRAM GUIDE -->
+  <!-- ============================================================== -->
   <div id="guideModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
     <div class="modal-card">
       <div class="modal-icon-badge badge-info">
@@ -1232,7 +1653,9 @@
     </div>
   </div>
 
+  <!-- ============================================================== -->
   <!-- VANILLA JAVASCRIPT APPLICATION LOGIC -->
+  <!-- ============================================================== -->
   <script>
     (function() {
       'use strict';
@@ -1264,6 +1687,44 @@
         "The Artist Date is a date with yourself, for yourself.",
         "We are our own most severe critics. The Morning Pages teach us to keep going anyway.",
         "Expect the universe to support your dream. It will."
+      ];
+
+      // --- ADHD: BRAIN-UNSTICK INITIATION SPARKS ---
+      const SPARKS = [
+        "Right now, what does my body feel like? Where am I holding tension?",
+        "If my inner critic was an annoying cartoon character, what is it squawking today?",
+        "What is the one thing I really, really don't want to write down on this page?",
+        "Three tiny sensory pleasures from yesterday were...",
+        "If nobody ever saw this and there were zero consequences, I would admit that...",
+        "What did my 8-year-old self love doing on carefree Saturday mornings?",
+        "What is currently feeling too heavy or burdensome in my life?",
+        "If my creativity were an animal, what kind of creature would it be this morning?",
+        "Ten things I am secretly longing for this month...",
+        "Describe the room I am sitting in as if it were a scene in a classic foreign film.",
+        "What advice would my 80-year-old wiser self give me right this second?",
+        "I feel stuck or resistant right now because...",
+        "If I allowed myself to write the messiest, most terrible page in history today...",
+        "A scent, sound, or color that gave me peace recently was...",
+        "What am I quietly proud of myself for surviving this year?"
+      ];
+
+      // --- ADHD: ARTIST DATE IDEA GENERATOR DECK ---
+      const ARTIST_DATES = [
+        { cat: "Nature & Strolls", text: "Visit a plant nursery, breathe in the humid greenhouse air, and touch five distinct leaf textures." },
+        { cat: "Thrift & Curiosities", text: "Browse an antique or thrift store specifically for vintage postcards, old tins, or quirky mugs." },
+        { cat: "Sensory & Food", text: "Take yourself to a historic bakery, order the most ornate pastry on display, and eat it with zero screen distraction." },
+        { cat: "Art & Tactile Play", text: "Go to an art supply shop and buy one single tube of paint or pastel in a wild color you never use." },
+        { cat: "Curiosity & Books", text: "Spend 45 minutes in an independent bookstore and pick a book purely based on its cover art." },
+        { cat: "Nature & Strolls", text: "Sit beneath an old tree with a hot thermos of tea and watch the clouds drift for 30 minutes." },
+        { cat: "Audio & Music", text: "Put on good headphones, lay flat on the floor or in bed, and listen to an entire instrumental album from start to finish." },
+        { cat: "Play & Childhood", text: "Buy cheap plasticine clay or modeling dough and sculpt a goofy creature at your kitchen table." },
+        { cat: "Solo Adventure", text: "Go to a movie theater for a weekday afternoon matinee completely by yourself with hot popcorn." },
+        { cat: "Sensory Exploration", text: "Visit a giant hardware store just to collect 10 colorful paint sample swatches that match your mood." },
+        { cat: "Tactile Play", text: "Sit at a cafe with a pen and draw 3 dogs or strangers without lifting the pen from the page." },
+        { cat: "Curiosity & Grocery", text: "Wander through an international market and choose 3 strange snacks or beverages you've never tasted." },
+        { cat: "Culture & Museum", text: "Visit a local museum with a single mission: find your single favorite painting and sit before it for 20 minutes." },
+        { cat: "Nature & Strolls", text: "Take a solitary walk along the water or in a new neighborhood with no destination in mind." },
+        { cat: "Sensory & Scent", text: "Visit an apothecary or candle boutique and spend time smelling cedar, amber, bergamot, and lavender." }
       ];
 
       const STORAGE_KEY = 'artists_way_tracker_v1';
@@ -1346,6 +1807,21 @@
         return 12;
       }
 
+      function getNextIncompleteAction() {
+        for (let w = 1; w <= 12; w++) {
+          const week = appState.weeks[w];
+          for (let d = 0; d < 7; d++) {
+            if (!week.days[d]) {
+              return { type: 'day', week: w, day: d, label: `Week ${w} · Day ${d + 1}` };
+            }
+          }
+          if (!week.artistDate) {
+            return { type: 'ad', week: w, label: `Week ${w} · Artist Date` };
+          }
+        }
+        return { type: 'done', label: 'All 12 Weeks Completed!' };
+      }
+
       // --- DOM REFERENCES ---
       const weeksContainer = document.getElementById('weeksContainer');
       const statMpDone = document.getElementById('statMpDone');
@@ -1354,6 +1830,10 @@
       const statAdPct = document.getElementById('statAdPct');
       const statOverallPct = document.getElementById('statOverallPct');
       const progressFill = document.getElementById('progressFill');
+
+      const quickLogHero = document.getElementById('quickLogHero');
+      const quickLogTitle = document.getElementById('quickLogTitle');
+      const quickLogSub = document.getElementById('quickLogSub');
 
       const quoteBox = document.getElementById('quoteBox');
       const quoteText = document.getElementById('quoteText');
@@ -1375,10 +1855,34 @@
       const themeLabel = document.getElementById('themeLabel');
       const metaThemeColor = document.getElementById('metaThemeColor');
 
+      const btnOpenTimer = document.getElementById('btnOpenTimer');
+      const timerModal = document.getElementById('timerModal');
+      const btnCloseTimer = document.getElementById('btnCloseTimer');
+      const btnToggleTimer = document.getElementById('btnToggleTimer');
+      const btnResetTimer = document.getElementById('btnResetTimer');
+      const timerDigits = document.getElementById('timerDigits');
+      const timerProgressCircle = document.getElementById('timerProgressCircle');
+      const chkAmbientSound = document.getElementById('chkAmbientSound');
+      const timerPresetButtons = document.querySelectorAll('.timer-preset-btn');
+
+      const btnOpenSpark = document.getElementById('btnOpenSpark');
+      const sparkModal = document.getElementById('sparkModal');
+      const sparkText = document.getElementById('sparkText');
+      const btnNextSpark = document.getElementById('btnNextSpark');
+      const btnCopySpark = document.getElementById('btnCopySpark');
+
+      const btnOpenIdeas = document.getElementById('btnOpenIdeas');
+      const ideaModal = document.getElementById('ideaModal');
+      const ideaCategory = document.getElementById('ideaCategory');
+      const ideaText = document.getElementById('ideaText');
+      const btnNextIdea = document.getElementById('btnNextIdea');
+      const btnUseIdea = document.getElementById('btnUseIdea');
+
       const btnExport = document.getElementById('btnExport');
       const btnImport = document.getElementById('btnImport');
       const importFileInput = document.getElementById('importFileInput');
       const toastPill = document.getElementById('toastPill');
+      const confettiCanvas = document.getElementById('confettiCanvas');
 
       let toastTimer = null;
       function showToast(msg) {
@@ -1387,7 +1891,7 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
           toastPill.classList.remove('is-active');
-        }, 2200);
+        }, 2400);
       }
 
       // --- THEME SYSTEM ---
@@ -1428,6 +1932,330 @@
         if (navigator.vibrate) navigator.vibrate(8);
         applyTheme(nextTheme);
         showToast(nextTheme === 'dark' ? 'Night Desk Mode on' : 'Paper Mode on');
+      });
+
+      // --- WEB AUDIO API: BELL CHIME & AMBIENT BROWN NOISE ---
+      let audioCtx = null;
+      let ambientSource = null;
+
+      function getAudioContext() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) audioCtx = new AudioContextClass();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function playTibetanBell() {
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          const freqs = [528, 1056, 1584];
+          freqs.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.18 / (idx + 1), ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.8);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 3.9);
+          });
+        } catch (e) {
+          console.warn('Audio play restricted or unsupported:', e);
+        }
+      }
+
+      function startAmbientNoise() {
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          stopAmbientNoise();
+
+          const bufferSize = ctx.sampleRate * 2;
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          let lastOut = 0.0;
+          for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            data[i] = (lastOut + (0.02 * white)) / 1.02;
+            lastOut = data[i];
+            data[i] *= 3.0;
+          }
+
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          noise.loop = true;
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.value = 420;
+
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.14, ctx.currentTime);
+
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          noise.start();
+          ambientSource = noise;
+        } catch (e) {
+          console.warn('Ambient noise error:', e);
+        }
+      }
+
+      function stopAmbientNoise() {
+        if (ambientSource) {
+          try { ambientSource.stop(); } catch(e){}
+          ambientSource.disconnect();
+          ambientSource = null;
+        }
+      }
+
+      // --- VANILLA 60FPS CONFETTI SYSTEM ---
+      function launchConfetti() {
+        const ctx = confettiCanvas.getContext('2d');
+        const w = (confettiCanvas.width = window.innerWidth);
+        const h = (confettiCanvas.height = window.innerHeight);
+
+        const particles = [];
+        const colors = ['#669472', '#D47963', '#D8AA64', '#E8E3D7', '#9E978C', '#B58E62'];
+
+        for (let i = 0; i < 70; i++) {
+          particles.push({
+            x: Math.random() * w,
+            y: Math.random() * -h * 0.4,
+            size: Math.random() * 8 + 5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: Math.random() * 3 + 2.5,
+            speedX: Math.random() * 2 - 1,
+            angle: Math.random() * 360,
+            spin: Math.random() * 0.1 - 0.05
+          });
+        }
+
+        let animFrame;
+        const startTime = Date.now();
+
+        function draw() {
+          ctx.clearRect(0, 0, w, h);
+          particles.forEach(p => {
+            p.y += p.speedY;
+            p.x += Math.sin(p.angle) * 1.5;
+            p.angle += p.spin;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+            ctx.restore();
+          });
+
+          if (Date.now() - startTime < 3500) {
+            animFrame = requestAnimationFrame(draw);
+          } else {
+            ctx.clearRect(0, 0, w, h);
+          }
+        }
+
+        cancelAnimationFrame(animFrame);
+        draw();
+      }
+
+      // --- ADHD 25-MIN TIMER LOGIC ---
+      let timerDuration = 25 * 60;
+      let timerRemaining = 25 * 60;
+      let timerInterval = null;
+      let isTimerRunning = false;
+      const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 70; // ~440
+
+      function updateTimerDisplay() {
+        const mins = Math.floor(timerRemaining / 60);
+        const secs = timerRemaining % 60;
+        timerDigits.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+        const fraction = (timerDuration - timerRemaining) / timerDuration;
+        const offset = CIRCLE_CIRCUMFERENCE * (1 - fraction);
+        timerProgressCircle.style.strokeDashoffset = offset;
+      }
+
+      function startTimer() {
+        isTimerRunning = true;
+        btnToggleTimer.textContent = 'Pause';
+        btnToggleTimer.classList.remove('btn-primary');
+        btnToggleTimer.classList.add('btn-secondary');
+
+        if (chkAmbientSound.checked) {
+          startAmbientNoise();
+        }
+
+        timerInterval = setInterval(() => {
+          if (timerRemaining > 0) {
+            timerRemaining--;
+            updateTimerDisplay();
+          } else {
+            // Timer Complete!
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            stopAmbientNoise();
+            btnToggleTimer.textContent = 'Start Writing';
+            btnToggleTimer.classList.add('btn-primary');
+            btnToggleTimer.classList.remove('btn-secondary');
+
+            playTibetanBell();
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 300]);
+            launchConfetti();
+            showToast('25 Minutes Complete! Pages done ✍️');
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        isTimerRunning = false;
+        clearInterval(timerInterval);
+        stopAmbientNoise();
+        btnToggleTimer.textContent = 'Resume';
+        btnToggleTimer.classList.add('btn-primary');
+        btnToggleTimer.classList.remove('btn-secondary');
+      }
+
+      function resetTimer(newSeconds) {
+        pauseTimer();
+        if (newSeconds) timerDuration = newSeconds;
+        timerRemaining = timerDuration;
+        btnToggleTimer.textContent = 'Start Writing';
+        updateTimerDisplay();
+      }
+
+      btnToggleTimer.addEventListener('click', () => {
+        if (isTimerRunning) {
+          pauseTimer();
+        } else {
+          startTimer();
+        }
+      });
+
+      btnResetTimer.addEventListener('click', () => {
+        resetTimer();
+      });
+
+      chkAmbientSound.addEventListener('change', () => {
+        if (isTimerRunning) {
+          if (chkAmbientSound.checked) startAmbientNoise();
+          else stopAmbientNoise();
+        }
+      });
+
+      timerPresetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          timerPresetButtons.forEach(b => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          const mins = parseInt(btn.dataset.min, 10);
+          resetTimer(mins * 60);
+        });
+      });
+
+      btnOpenTimer.addEventListener('click', () => {
+        timerModal.classList.add('is-open');
+      });
+
+      btnCloseTimer.addEventListener('click', () => {
+        timerModal.classList.remove('is-open');
+      });
+
+      // --- BRAIN-UNSTICK MODAL LOGIC ---
+      function shuffleSpark() {
+        const rand = SPARKS[Math.floor(Math.random() * SPARKS.length)];
+        sparkText.textContent = `"${rand}"`;
+      }
+
+      btnOpenSpark.addEventListener('click', () => {
+        shuffleSpark();
+        sparkModal.classList.add('is-open');
+      });
+
+      btnNextSpark.addEventListener('click', () => {
+        shuffleSpark();
+        if (navigator.vibrate) navigator.vibrate(8);
+      });
+
+      btnCopySpark.addEventListener('click', () => {
+        const textToCopy = sparkText.textContent.replace(/^"|"$/g, '');
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          showToast('Prompt copied to clipboard!');
+          sparkModal.classList.remove('is-open');
+        });
+      });
+
+      // --- ARTIST DATE IDEA GENERATOR JAR LOGIC ---
+      let currentIdea = ARTIST_DATES[0];
+
+      function shuffleIdea() {
+        currentIdea = ARTIST_DATES[Math.floor(Math.random() * ARTIST_DATES.length)];
+        ideaCategory.textContent = currentIdea.cat;
+        ideaText.textContent = `"${currentIdea.text}"`;
+      }
+
+      btnOpenIdeas.addEventListener('click', () => {
+        shuffleIdea();
+        ideaModal.classList.add('is-open');
+      });
+
+      btnNextIdea.addEventListener('click', () => {
+        shuffleIdea();
+        if (navigator.vibrate) navigator.vibrate(8);
+      });
+
+      btnUseIdea.addEventListener('click', () => {
+        const activeW = getFirstIncompleteWeek();
+        const existingNote = appState.weeks[activeW].artistDateNote || '';
+        const ideaNote = currentIdea.text;
+        appState.weeks[activeW].artistDateNote = existingNote ? `${existingNote} · ${ideaNote}` : ideaNote;
+        saveState();
+        renderWeeks();
+        ideaModal.classList.remove('is-open');
+        showToast(`Idea added to Week ${activeW} notes!`);
+      });
+
+      // --- ONE-TAP QUICK CHECK-IN ACTION ---
+      function updateQuickLogHero() {
+        const next = getNextIncompleteAction();
+        if (next.type === 'day') {
+          quickLogTitle.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Check Off Today's Pages
+          `;
+          quickLogSub.textContent = `Next: Week ${next.week} · Day ${next.day + 1}`;
+          quickLogHero.style.display = 'flex';
+        } else if (next.type === 'ad') {
+          quickLogTitle.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
+            Complete Artist Date
+          `;
+          quickLogSub.textContent = `Next: Week ${next.week} · Artist Date`;
+          quickLogHero.style.display = 'flex';
+        } else {
+          quickLogTitle.textContent = `Course Completed!`;
+          quickLogSub.textContent = `All 84 Morning Pages & 12 Artist Dates done!`;
+        }
+      }
+
+      quickLogHero.addEventListener('click', () => {
+        const next = getNextIncompleteAction();
+        if (next.type === 'day') {
+          toggleDay(next.week, next.day);
+          showToast(`Week ${next.week}, Day ${next.day + 1} checked! ✍️`);
+        } else if (next.type === 'ad') {
+          toggleArtistDate(next.week);
+          showToast(`Week ${next.week} Artist Date completed! 🎨`);
+        }
       });
 
       // --- RENDER WEEKS ---
@@ -1482,7 +2310,10 @@
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                     Morning Pages
                   </span>
-                  <span class="sub-desc">3 handwritten pages</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="sub-desc">3 handwritten pages</span>
+                    <button type="button" class="section-action-btn btn-inline-spark" title="Stuck? Get a prompt">💡 Spark</button>
+                  </div>
                 </div>
                 <div class="days-grid" role="group" aria-label="Week ${wNum} Morning Pages">
                   ${[0,1,2,3,4,5,6].map(dayIdx => {
@@ -1508,7 +2339,10 @@
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 15 11 20 12 16 16 17 21 12 18 7 21 8 16 4 12 9 11 12 6"></polygon></svg>
                     Weekly Artist Date
                   </span>
-                  <span class="sub-desc">2 hours of solo play</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="sub-desc">2 hours of solo play</span>
+                    <button type="button" class="section-action-btn btn-inline-idea" data-week="${wNum}" title="Need ideas?">🎲 Ideas</button>
+                  </div>
                 </div>
 
                 <div class="ad-card-box ${adDone ? 'is-checked' : ''}">
@@ -1545,7 +2379,7 @@
               ${isWeekComplete ? `
                 <div class="week-completed-banner">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                  <span>Week Complete · Creative recovery in action!</span>
+                  <span>Week Complete · Creative recovery in action! 🎉</span>
                 </div>
               ` : ''}
             </div>
@@ -1554,6 +2388,26 @@
           // Event Listeners for this card
           const headerBtn = card.querySelector('.week-header');
           headerBtn.addEventListener('click', () => toggleWeekAccordion(wNum));
+
+          // Inline spark button
+          const inlineSpark = card.querySelector('.btn-inline-spark');
+          if (inlineSpark) {
+            inlineSpark.addEventListener('click', (e) => {
+              e.stopPropagation();
+              shuffleSpark();
+              sparkModal.classList.add('is-open');
+            });
+          }
+
+          // Inline idea button
+          const inlineIdea = card.querySelector('.btn-inline-idea');
+          if (inlineIdea) {
+            inlineIdea.addEventListener('click', (e) => {
+              e.stopPropagation();
+              shuffleIdea();
+              ideaModal.classList.add('is-open');
+            });
+          }
 
           // Morning page day click
           const dayButtons = card.querySelectorAll('.day-btn');
@@ -1588,6 +2442,7 @@
         });
 
         updateProgressMetrics();
+        updateQuickLogHero();
       }
 
       function escapeHtml(str) {
@@ -1622,13 +2477,31 @@
         if (navigator.vibrate) navigator.vibrate(12);
         const currentVal = appState.weeks[wNum].days[dayIdx];
         appState.weeks[wNum].days[dayIdx] = !currentVal;
+        
+        // Check if this action just completed the week!
+        const w = appState.weeks[wNum];
+        if (!currentVal && w.days.every(Boolean) && w.artistDate) {
+          launchConfetti();
+          playTibetanBell();
+          showToast(`Week ${wNum} Complete! Outstanding! 🎉`);
+        }
+
         saveState();
         renderWeeks();
       }
 
       function toggleArtistDate(wNum) {
         if (navigator.vibrate) navigator.vibrate(14);
-        appState.weeks[wNum].artistDate = !appState.weeks[wNum].artistDate;
+        const currentVal = appState.weeks[wNum].artistDate;
+        appState.weeks[wNum].artistDate = !currentVal;
+
+        const w = appState.weeks[wNum];
+        if (!currentVal && w.days.every(Boolean) && w.artistDate) {
+          launchConfetti();
+          playTibetanBell();
+          showToast(`Week ${wNum} Complete! Outstanding! 🎉`);
+        }
+
         saveState();
         renderWeeks();
       }
@@ -1728,7 +2601,7 @@
       });
 
       // Close modals on backdrop click or ESC
-      [resetModal, guideModal].forEach(modal => {
+      [resetModal, guideModal, timerModal, sparkModal, ideaModal].forEach(modal => {
         modal.addEventListener('click', (e) => {
           if (e.target === modal) modal.classList.remove('is-open');
         });
@@ -1736,8 +2609,7 @@
 
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          resetModal.classList.remove('is-open');
-          guideModal.classList.remove('is-open');
+          [resetModal, guideModal, timerModal, sparkModal, ideaModal].forEach(m => m.classList.remove('is-open'));
         }
       });
 
@@ -1795,6 +2667,7 @@
       loadState();
       applyTheme(appState.theme || 'light');
       displayQuote();
+      updateTimerDisplay();
       renderWeeks();
 
     })();
