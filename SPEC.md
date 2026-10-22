@@ -207,4 +207,4 @@ Each chapter has its own accent, like a 12-colour paint set. The accent follows 
 
 ## Deploy
 
-GitHub `abasarcadi-ops/artist-way-compation`, branch `main`, auto-deploys to Netlify project `artists-way-companion` (artists-way-companion.netlify.app). Each deploy costs 15 credits from the shared team cap. Same origin as v1, so the old saved data is there to migrate.
+Code on GitHub `abasarcadi-ops/artist-way-companion`, branch `main`. Netlify project `artists-way-companion` (artists-way-companion.netlify.app) is not linked to GitHub: `node deploy.mjs` uploads `public/` and `netlify.toml` through the Netlify MCP. Each deploy costs 15 credits from the shared team cap. Same origin as v1, so the old saved data is there to migrate.

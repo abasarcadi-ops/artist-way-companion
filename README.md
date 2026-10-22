@@ -69,9 +69,9 @@ Data from the first version of the app (key `artists_way_tracker_v1`) is migrate
 
 ## Deploys
 
-Pushing to `main` on GitHub deploys to Netlify. `netlify.toml` publishes `public/` as it is, with no build command, and sets the cache headers: `sw.js`, `index.html`, `/` and `manifest.json` are checked with the server on every load, and the font files are kept for a year.
+Netlify is not linked to GitHub, so pushing does not deploy. `node deploy.mjs` stages `public/` and `netlify.toml` in a temp folder and uploads them through the Netlify MCP's deploy-site operation (`node deploy.mjs --site-id <id> --proxy-path "<url>"`, or `--stage` to only stage). `netlify.toml` publishes `public/` as it is, with no build command, and sets the cache headers: `sw.js`, `index.html`, `/` and `manifest.json` are checked with the server on every load, and the font files are kept for a year.
 
-Every push to `main` is a deploy, and each deploy uses credits from a shared team cap. Batch changes, run `npm test` and `npm run e2e` first, then push once.
+Each deploy uses credits from a shared team cap. Batch changes, run `npm test` and `npm run e2e` first, bump `VERSION` in `public/sw.js` and `APP_VERSION` in `public/ui/store.js` together, then deploy once.
 
 The site keeps the address of the first version, so its saved data is there to migrate.
 
