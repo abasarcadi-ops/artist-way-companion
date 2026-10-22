@@ -1,10 +1,38 @@
-# Netlify configuration for The Artist's Way PWA
+# Netlify publishes public/ as it is. There is no build command.
+[build]
+  publish = "public"
+
+# package.json only holds test tooling (Playwright). With NODE_ENV=production
+# Netlify skips devDependencies, so a deploy installs nothing.
+[build.environment]
+  NODE_ENV = "production"
+
+# Always checked with the server, so a new deploy reaches the phone on its
+# next launch: the service worker, the page and the manifest.
 [[headers]]
   for = "/sw.js"
   [headers.values]
-    cache-control = "max-age=0, no-cache, no-store, must-revalidate"
+    Cache-Control = "no-cache, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/manifest.json"
   [headers.values]
-    cache-control = "max-age=0, no-cache, no-store, must-revalidate"
+    Cache-Control = "no-cache, max-age=0, must-revalidate"
+
+# Font files carry their version in the name (v7) and never change in place,
+# so browsers keep them for a year. fonts.css keeps a fixed name and stays on
+# Netlify's default (revalidate on every load), so a change to it still lands.
+[[headers]]
+  for = "/fonts/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,100 +1,93 @@
-# The Artist's Way · 12-Week Companion Tracker (PWA)
+# Artist's Way Companion
 
-A minimalist, paper-inspired Progressive Web App designed as an accountability companion for Julia Cameron's *The Artist's Way*.
+A phone web app for working through *The Artist's Way* with a paper notebook. The morning pages get written by hand. The app counts them by date, runs the writing timer, holds the weekly artist date and check-in, and lets you take the twelve chapters at your own pace.
 
-Built with vanilla HTML, CSS, and JavaScript. Designed mobile-first specifically for iOS Home Screen installation with offline support via Service Worker.
+It is a static site: HTML, CSS and plain ES modules in `public/`. No build step, no accounts, no server code. Added to the home screen from Safari, it runs full screen and works offline.
 
----
+## Run it
 
-## Features
+Needs Node 20 or later.
 
-- **12-Week Chapter Layout**: Includes all 12 official chapter themes from the book (from *Week 1: Recovering a Sense of Safety* to *Week 12: Recovering a Sense of Faith*).
-- **Day & Night Desk Modes (Dark Mode)**: One-tap toggle between warm creamy paper mode and a soothing, dimly-lit "Night Desk" dark theme (charcoal slate, ivory text, and muted embers). Automatically detects iOS system preferences and remembers your choice with zero white-flash.
-- **Morning Pages Daily Tracker**: 7 tactile toggle pills (`D1`–`D7`) per week with haptic feedback and instant status updates.
-- **Weekly Artist Date Tracker**: Dedicated toggle switch plus an expandable lined reflection note field for each week's outing.
-- **Smart Accordion UX**: Automatically detects and expands your currently active week on launch, with quick controls to "Expand Active" or "Expand / Collapse All".
-- **Overall Course Progress**: Real-time counter showing Morning Pages (`/ 84`), Artist Dates (`/ 12`), and a calming green progress bar.
-- **Daily Inspiration**: Curated Julia Cameron quotes that rotate with a gentle tap.
-- **100% Offline & Local Storage**: Auto-saves every tap to `localStorage`. No accounts, no database, zero tracking.
-- **Custom Reset Confirmation**: In-app modal with zero native browser dialogs (`alert`/`confirm`), complete with safety warnings.
-- **Backup & Restore**: Export your progress as a `.json` backup file or restore it anytime.
-- **iOS Safe-Area Aware**: Built with `viewport-fit=cover`, `-webkit-tap-highlight-color: transparent`, and notch/home-bar padding.
-
----
-
-## File Structure
-
-```text
-artists-way-tracker/
-├── index.html            # Main application (HTML, CSS, and JS all self-contained)
-├── manifest.json         # PWA Web App Manifest
-├── sw.js                 # Offline Service Worker
-├── icon.svg              # Scalable vector icon
-├── icon-192.png          # PWA Android/Web icon (192x192)
-├── icon-512.png          # PWA Android/Web icon (512x512)
-├── apple-touch-icon.png  # High-res iOS Home Screen icon (180x180)
-├── netlify.toml          # Netlify cache headers for instantaneous PWA updates
-└── README.md             # Documentation & deployment guide
+```sh
+npm run dev
 ```
 
----
+This serves `public/` at http://localhost:8910 with caching turned off, so a reload always shows the files on disk. `PORT=9000 npm run dev` uses another port. `HOST=0.0.0.0 npm run dev` lets a phone on the same network open it.
 
-## How to Test Locally
+The app itself has no dependencies. `npm install` is only needed for the browser tests.
 
-You can test the app on your local machine before pushing:
+### Test another day
 
-### Option A: Using Python (built-in on macOS)
-```bash
-cd "artists-way-tracker"
-python3 -m http.server 8080
+On localhost the app takes its date from `?today=YYYY-MM-DD`:
+
 ```
-Open your browser to `http://localhost:8080`.
-
-### Option B: Using Node.js
-```bash
-cd "artists-way-tracker"
-npx serve .
+http://localhost:8910/?today=2026-10-22
 ```
 
----
+Handy for checking a new week, a gap of a few days or the turn of a month without touching the computer's clock. The live site ignores it and always uses the phone's own date.
 
-## Deploying to Netlify via GitHub
+## Tests
 
-Follow these steps to host the app for free on Netlify:
-
-### Step 1: Create a GitHub Repository
-1. Go to [GitHub.com](https://github.com) and click **New Repository**.
-2. Name it `artists-way-tracker` (or any name you like) and choose **Public** or **Private**.
-3. In your terminal, navigate into the project folder and push the code:
-
-```bash
-cd "artists-way-tracker"
-git init
-git add .
-git commit -m "Initial commit: The Artist's Way Companion PWA"
-git branch -M main
-git remote add origin https://github.com/<YOUR-GITHUB-USERNAME>/artists-way-tracker.git
-git push -u origin main
+```sh
+npm test       # unit tests, test/*.test.mjs (node:test, nothing to install)
+npm install    # once, for the browser tests
+npm run e2e    # Playwright: Chromium at iPhone size, 390x844 at 3x
 ```
 
-### Step 2: Connect to Netlify
-1. Go to [Netlify.com](https://www.netlify.com) and log in.
-2. Click **Add new site** → **Import an existing project**.
-3. Select **GitHub** and authorize Netlify.
-4. Pick your `artists-way-tracker` repository.
-5. In the deploy settings:
-   - **Branch to deploy**: `main`
-   - **Build command**: *(leave empty)*
-   - **Publish directory**: *(leave empty or `.`, since `index.html` is at the root)*
-6. Click **Deploy Site**.
-7. Once deployed, Netlify provides a live HTTPS URL (e.g. `https://peaceful-artist-12345.netlify.app`). You can also change the site name in **Site configuration → Change site name**.
+`npm run e2e` starts its own server on a free port, gives every test a fresh browser (empty storage, no service worker) and exits with an error when a test fails. Screenshots go to `test-results/`. `HEADED=1 npm run e2e` shows the browser while it runs. If Playwright says its browser is missing, run `npx playwright install chromium`.
 
----
+Playwright is pinned to an exact version in `package.json`.
 
-## Adding to Your iOS Home Screen
+## What's where
 
-1. Open your live Netlify URL in **Safari** on your iPhone.
-2. Tap the **Share** button (the square with an arrow pointing upward at the bottom of Safari).
-3. Scroll down and tap **Add to Home Screen**.
-4. Confirm the name (*The Artist's Way*) and tap **Add** in the top-right corner.
-5. Tap the new app icon on your Home Screen. It will launch in **standalone mode** (no browser address bar, no navigation controls) like a native iOS application.
+```
+public/               everything the site serves
+  index.html
+  app.js, ui/*.js     the interface
+  core.js             pure logic: dates, saved state, v1 migration (no DOM)
+  content.js          all copy and the prompt decks
+  accents.js, .css    one accent colour per chapter
+  styles.css
+  fonts/              Schibsted Grotesk: woff2 files, fonts.css, licence
+  sw.js               service worker
+  manifest.json, icon.svg, icon-192.png, icon-512.png,
+  icon-maskable-512.png, apple-touch-icon.png
+test/
+  *.test.mjs          unit tests: core, content, accent contrast
+  e2e.mjs             browser tests
+  server.mjs          the local server
+SPEC.md               what the app does and why
+```
+
+Fonts and icons are served from the site itself, so the app never calls a third party.
+
+## Where the data lives
+
+On the phone only, in `localStorage` under the key `awc.v2`. Nothing is sent anywhere. Settings has a backup: copy it, download it as a file, or restore from a file. Make one before changing phones or clearing website data.
+
+Data from the first version of the app (key `artists_way_tracker_v1`) is migrated the first time the new version opens. The old key is only read: it is never changed or deleted, so the original data stays on the phone.
+
+## Deploys
+
+Pushing to `main` on GitHub deploys to Netlify. `netlify.toml` publishes `public/` as it is, with no build command, and sets the cache headers: `sw.js`, `index.html`, `/` and `manifest.json` are checked with the server on every load, and the font files are kept for a year.
+
+Every push to `main` is a deploy, and each deploy uses credits from a shared team cap. Batch changes, run `npm test` and `npm run e2e` first, then push once.
+
+The site keeps the address of the first version, so its saved data is there to migrate.
+
+### The service worker
+
+`public/sw.js` answers every same-origin GET from the network first. When the network takes longer than 2.5 s, or there is none, the cached copy is used. Scripts are the exception: they always wait for the network and only fall back to the cache when there is no network at all, so a slow connection after a deploy can't mix old and new modules. Every good answer is stored, so the cache keeps up with the latest deploy on its own.
+
+Before each release:
+
+1. bump `VERSION` in `public/sw.js`, and keep `APP_VERSION` in `public/ui/store.js` (shown in Settings) equal to it,
+2. when a file in `public/` was added, removed or renamed, update the `SHELL` list in `public/sw.js` too. `npm run e2e` fails until the list matches the folder.
+
+A new `VERSION` installs a new worker. It caches the shell, takes over straight away and deletes every older cache. The app then reloads once, but never in the middle of something: it waits while the writing screen is open or its timer runs, while a sheet is open and while a text field has focus, then reloads as soon as that ends or the app goes to the background (unless a writing session is still going). Pending saves are written first. Without a new `VERSION` the files still update (network first), but an app that stays open keeps running the old code until it is closed.
+
+The font files are cached for a year under their names, so never replace one in place. A new font version gets new file names, in `fonts/fonts.css` and in `SHELL`.
+
+## Licences
+
+Schibsted Grotesk is licensed under the SIL Open Font License 1.1, see `public/fonts/OFL.txt`.

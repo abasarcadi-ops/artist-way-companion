@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0B0C" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Artist's Way">
+<meta name="description" content="A companion for The Artist's Way: morning pages on paper, tracked by date, with the timer, the artist date and the weekly check-in.">
+<title>Artist's Way</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="accents.css">
+<script>
+  // Apply a forced theme before first paint, so a dark morning never flashes white.
+  try {
+    var saved = JSON.parse(localStorage.getItem('awc.v2') || 'null');
+    var theme = saved && saved.settings && saved.settings.theme;
+    if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+  document.documentElement.classList.add('no-anim');
+</script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="bar" id="bar"></header>
+  <main class="view" id="view-today" data-view="today"></main>
+  <main class="view" id="view-book" data-view="book" hidden></main>
+  <main class="view" id="view-kept" data-view="kept" hidden></main>
+</div>
+<section class="writing" id="writing" data-test="writing" role="dialog" aria-modal="true" aria-labelledby="w-label" aria-hidden="true" tabindex="-1" inert></section>
+<div id="sheets"></div>
+<div class="toast" id="toast" data-test="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

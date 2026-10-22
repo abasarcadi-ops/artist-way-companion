@@ -1,0 +1,6 @@
+node_modules/
+design/
+test-results/
+.DS_Store
+.netlify/
+.claude/

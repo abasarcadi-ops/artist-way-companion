@@ -1,0 +1,158 @@
+/* Accent tokens: a 12-tube paint set, one colour per chapter (keys and notes in accents.js).
+
+   --accent       fill: page strokes, today's cell, the primary button, the current Book row
+   --on-accent    text and icons on that fill, at least 4.5:1
+   --accent-text  the colour as text or thin lines on the paper, at least 4.5:1
+   --accent-edge  outline around fills on the paper: transparent when the fill reaches 3:1
+                  against the paper, otherwise the ink colour (light colours on white get one)
+
+   Light theme: paper #FFFFFF, ink #0B0B0C. Dark theme: paper #0B0B0C, ink #F3F3F4.
+   Selectors work on any element, so a Book row can carry its own data-accent.
+   Three-state theme: light values first, dark values under the OS setting unless the root
+   forces light, and again under an explicit data-theme="dark".
+   test/accents.test.mjs checks every rule above for every colour in both themes. */
+
+/* Default for a root without data-accent (or with a key this file does not know): ultramarine. */
+:root { --accent: #1F3BFF; --on-accent: #FFFFFF; --accent-text: #1F3BFF; --accent-edge: transparent; }
+
+/* ---- Light ---- */
+
+/* 1 Safety · Ultramarine */
+[data-accent="ultramarine"] { --accent: #1F3BFF; --on-accent: #FFFFFF; --accent-text: #1F3BFF; --accent-edge: transparent; }
+
+/* 2 Identity · May Green */
+[data-accent="may-green"] { --accent: #96D500; --on-accent: #0B0B0C; --accent-text: #4D8200; --accent-edge: #0B0B0C; }
+
+/* 3 Power · Cadmium Red */
+[data-accent="cadmium-red"] { --accent: #E5200F; --on-accent: #FFFFFF; --accent-text: #E5200F; --accent-edge: transparent; }
+
+/* 4 Integrity · Cerulean */
+[data-accent="cerulean"] { --accent: #00C8E7; --on-accent: #0B0B0C; --accent-text: #008095; --accent-edge: #0B0B0C; }
+
+/* 5 Possibility · Cadmium Yellow */
+[data-accent="cadmium-yellow"] { --accent: #FFC400; --on-accent: #0B0B0C; --accent-text: #9A6D00; --accent-edge: #0B0B0C; }
+
+/* 6 Abundance · Dioxazine Violet */
+[data-accent="dioxazine-violet"] { --accent: #AD2AFF; --on-accent: #FFFFFF; --accent-text: #AD2AFF; --accent-edge: transparent; }
+
+/* 7 Connection · Emerald Green */
+[data-accent="emerald-green"] { --accent: #009648; --on-accent: #0B0B0C; --accent-text: #008740; --accent-edge: transparent; }
+
+/* 8 Strength · Cobalt Blue */
+[data-accent="cobalt-blue"] { --accent: #0089EA; --on-accent: #0B0B0C; --accent-text: #0077CD; --accent-edge: transparent; }
+
+/* 9 Compassion · Opera Rose */
+[data-accent="opera-rose"] { --accent: #FF3B87; --on-accent: #0B0B0C; --accent-text: #E20F70; --accent-edge: transparent; }
+
+/* 10 Self-Protection · Cadmium Orange */
+[data-accent="cadmium-orange"] { --accent: #F98400; --on-accent: #0B0B0C; --accent-text: #B45E00; --accent-edge: #0B0B0C; }
+
+/* 11 Autonomy · Magenta */
+[data-accent="magenta"] { --accent: #EB00C8; --on-accent: #0B0B0C; --accent-text: #D600B6; --accent-edge: transparent; }
+
+/* 12 Faith · Cobalt Teal */
+[data-accent="cobalt-teal"] { --accent: #00D1B2; --on-accent: #0B0B0C; --accent-text: #008470; --accent-edge: #0B0B0C; }
+
+/* ---- Dark, following the OS unless the root forces light ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --accent: #2243FF; --on-accent: #FFFFFF; --accent-text: #416FFF; --accent-edge: transparent; }
+
+  /* 1 Safety · Ultramarine */
+  :root:not([data-theme="light"]) [data-accent="ultramarine"],
+  :root:not([data-theme="light"])[data-accent="ultramarine"] { --accent: #2243FF; --on-accent: #FFFFFF; --accent-text: #416FFF; --accent-edge: transparent; }
+
+  /* 2 Identity · May Green */
+  :root:not([data-theme="light"]) [data-accent="may-green"],
+  :root:not([data-theme="light"])[data-accent="may-green"] { --accent: #96D500; --on-accent: #0B0B0C; --accent-text: #96D500; --accent-edge: transparent; }
+
+  /* 3 Power · Cadmium Red */
+  :root:not([data-theme="light"]) [data-accent="cadmium-red"],
+  :root:not([data-theme="light"])[data-accent="cadmium-red"] { --accent: #E5200F; --on-accent: #FFFFFF; --accent-text: #EC2A19; --accent-edge: transparent; }
+
+  /* 4 Integrity · Cerulean */
+  :root:not([data-theme="light"]) [data-accent="cerulean"],
+  :root:not([data-theme="light"])[data-accent="cerulean"] { --accent: #00C8E7; --on-accent: #0B0B0C; --accent-text: #00C8E7; --accent-edge: transparent; }
+
+  /* 5 Possibility · Cadmium Yellow */
+  :root:not([data-theme="light"]) [data-accent="cadmium-yellow"],
+  :root:not([data-theme="light"])[data-accent="cadmium-yellow"] { --accent: #FFC400; --on-accent: #0B0B0C; --accent-text: #FFC400; --accent-edge: transparent; }
+
+  /* 6 Abundance · Dioxazine Violet */
+  :root:not([data-theme="light"]) [data-accent="dioxazine-violet"],
+  :root:not([data-theme="light"])[data-accent="dioxazine-violet"] { --accent: #AD2AFF; --on-accent: #FFFFFF; --accent-text: #B03BFF; --accent-edge: transparent; }
+
+  /* 7 Connection · Emerald Green */
+  :root:not([data-theme="light"]) [data-accent="emerald-green"],
+  :root:not([data-theme="light"])[data-accent="emerald-green"] { --accent: #009648; --on-accent: #0B0B0C; --accent-text: #009648; --accent-edge: transparent; }
+
+  /* 8 Strength · Cobalt Blue */
+  :root:not([data-theme="light"]) [data-accent="cobalt-blue"],
+  :root:not([data-theme="light"])[data-accent="cobalt-blue"] { --accent: #0089EA; --on-accent: #0B0B0C; --accent-text: #0089EA; --accent-edge: transparent; }
+
+  /* 9 Compassion · Opera Rose */
+  :root:not([data-theme="light"]) [data-accent="opera-rose"],
+  :root:not([data-theme="light"])[data-accent="opera-rose"] { --accent: #FF3B87; --on-accent: #0B0B0C; --accent-text: #FF3B87; --accent-edge: transparent; }
+
+  /* 10 Self-Protection · Cadmium Orange */
+  :root:not([data-theme="light"]) [data-accent="cadmium-orange"],
+  :root:not([data-theme="light"])[data-accent="cadmium-orange"] { --accent: #F98400; --on-accent: #0B0B0C; --accent-text: #F98400; --accent-edge: transparent; }
+
+  /* 11 Autonomy · Magenta */
+  :root:not([data-theme="light"]) [data-accent="magenta"],
+  :root:not([data-theme="light"])[data-accent="magenta"] { --accent: #EB00C8; --on-accent: #0B0B0C; --accent-text: #EB00C8; --accent-edge: transparent; }
+
+  /* 12 Faith · Cobalt Teal */
+  :root:not([data-theme="light"]) [data-accent="cobalt-teal"],
+  :root:not([data-theme="light"])[data-accent="cobalt-teal"] { --accent: #00D1B2; --on-accent: #0B0B0C; --accent-text: #00D1B2; --accent-edge: transparent; }
+}
+
+/* ---- Dark, chosen in Settings ---- */
+:root[data-theme="dark"] { --accent: #2243FF; --on-accent: #FFFFFF; --accent-text: #416FFF; --accent-edge: transparent; }
+
+/* 1 Safety · Ultramarine */
+:root[data-theme="dark"] [data-accent="ultramarine"],
+:root[data-theme="dark"][data-accent="ultramarine"] { --accent: #2243FF; --on-accent: #FFFFFF; --accent-text: #416FFF; --accent-edge: transparent; }
+
+/* 2 Identity · May Green */
+:root[data-theme="dark"] [data-accent="may-green"],
+:root[data-theme="dark"][data-accent="may-green"] { --accent: #96D500; --on-accent: #0B0B0C; --accent-text: #96D500; --accent-edge: transparent; }
+
+/* 3 Power · Cadmium Red */
+:root[data-theme="dark"] [data-accent="cadmium-red"],
+:root[data-theme="dark"][data-accent="cadmium-red"] { --accent: #E5200F; --on-accent: #FFFFFF; --accent-text: #EC2A19; --accent-edge: transparent; }
+
+/* 4 Integrity · Cerulean */
+:root[data-theme="dark"] [data-accent="cerulean"],
+:root[data-theme="dark"][data-accent="cerulean"] { --accent: #00C8E7; --on-accent: #0B0B0C; --accent-text: #00C8E7; --accent-edge: transparent; }
+
+/* 5 Possibility · Cadmium Yellow */
+:root[data-theme="dark"] [data-accent="cadmium-yellow"],
+:root[data-theme="dark"][data-accent="cadmium-yellow"] { --accent: #FFC400; --on-accent: #0B0B0C; --accent-text: #FFC400; --accent-edge: transparent; }
+
+/* 6 Abundance · Dioxazine Violet */
+:root[data-theme="dark"] [data-accent="dioxazine-violet"],
+:root[data-theme="dark"][data-accent="dioxazine-violet"] { --accent: #AD2AFF; --on-accent: #FFFFFF; --accent-text: #B03BFF; --accent-edge: transparent; }
+
+/* 7 Connection · Emerald Green */
+:root[data-theme="dark"] [data-accent="emerald-green"],
+:root[data-theme="dark"][data-accent="emerald-green"] { --accent: #009648; --on-accent: #0B0B0C; --accent-text: #009648; --accent-edge: transparent; }
+
+/* 8 Strength · Cobalt Blue */
+:root[data-theme="dark"] [data-accent="cobalt-blue"],
+:root[data-theme="dark"][data-accent="cobalt-blue"] { --accent: #0089EA; --on-accent: #0B0B0C; --accent-text: #0089EA; --accent-edge: transparent; }
+
+/* 9 Compassion · Opera Rose */
+:root[data-theme="dark"] [data-accent="opera-rose"],
+:root[data-theme="dark"][data-accent="opera-rose"] { --accent: #FF3B87; --on-accent: #0B0B0C; --accent-text: #FF3B87; --accent-edge: transparent; }
+
+/* 10 Self-Protection · Cadmium Orange */
+:root[data-theme="dark"] [data-accent="cadmium-orange"],
+:root[data-theme="dark"][data-accent="cadmium-orange"] { --accent: #F98400; --on-accent: #0B0B0C; --accent-text: #F98400; --accent-edge: transparent; }
+
+/* 11 Autonomy · Magenta */
+:root[data-theme="dark"] [data-accent="magenta"],
+:root[data-theme="dark"][data-accent="magenta"] { --accent: #EB00C8; --on-accent: #0B0B0C; --accent-text: #EB00C8; --accent-edge: transparent; }
+
+/* 12 Faith · Cobalt Teal */
+:root[data-theme="dark"] [data-accent="cobalt-teal"],
+:root[data-theme="dark"][data-accent="cobalt-teal"] { --accent: #00D1B2; --on-accent: #0B0B0C; --accent-text: #00D1B2; --accent-edge: transparent; }
